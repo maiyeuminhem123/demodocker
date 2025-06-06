@@ -67,7 +67,7 @@ builder.Services.AddDataProtection()
     .SetApplicationName("WebBanMayTinh");
 
 // Cấu hình cổng lắng nghe (khớp với docker-compose.yml)
-//builder.WebHost.UseUrls("http://[::]:80");   // khi nào build trên docker thì mở
+builder.WebHost.UseUrls("http://[::]:80");   // khi nào build trên docker thì mở
 
 var app = builder.Build();
 
