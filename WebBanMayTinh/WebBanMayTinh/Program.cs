@@ -71,6 +71,25 @@ builder.WebHost.UseUrls("http://[::]:80");   // khi nào build trên docker thì
 
 var app = builder.Build();
 
+// =================================================================
+// ĐOẠN CODE TỰ ĐỘNG CHẠY MIGRATION ĐƯỢC THÊM VÀO ĐÂY
+// =================================================================
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating the database.");
+    }
+}
+// =================================================================
+
 
 // Middleware
 if (app.Environment.IsDevelopment())
